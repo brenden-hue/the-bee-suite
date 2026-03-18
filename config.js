@@ -1,6 +1,6 @@
 window.CRM_CONFIG = {
-  supabaseUrl: "https://dzfdvfcqexhtyffknyas.supabase.co",
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6ZmR2ZmNxZXhodHlmZmtueWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODYxNDcsImV4cCI6MjA4OTM2MjE0N30.7kWjZRGL40V87twZkr4R0hieImR9yvCJGH2IR6SUuC8",
+  supabaseUrl: "YOUR_SUPABASE_URL",
+  supabaseAnonKey: "YOUR_SUPABASE_ANON_KEY",
 
   billingHidden: true,
 
@@ -16,7 +16,6 @@ window.CRM_CONFIG = {
 
   quickFilters: [
     { id: "all", label: "All Data" },
-    { id: "orlando", label: "Orlando" },
     { id: "high_intent", label: "High Intent" },
     { id: "needs_reply", label: "Needs Reply" },
     { id: "today", label: "Today" }
@@ -27,22 +26,19 @@ window.CRM_CONFIG = {
       label: "Executive View",
       title: "Executive Command Center",
       heroTitle: "Portfolio-wide visibility for Kid City USA",
-      heroCopy:
-        "See enrollment health, center readiness, staffing coverage, parent engagement, and lead flow across the portfolio."
+      heroCopy: "See enrollment health, center readiness, staffing coverage, parent engagement, and lead flow across the portfolio."
     },
     director: {
       label: "Director View",
       title: "Center Operations Command",
       heroTitle: "Run the center without losing the big picture",
-      heroCopy:
-        "Watch leads, tours, staffing, parent communication, classroom readiness, and compliance from one screen."
+      heroCopy: "Watch leads, tours, staffing, parent communication, classroom readiness, and compliance from one screen."
     },
     admissions: {
       label: "Admissions View",
       title: "Admissions Growth Hub",
       heroTitle: "Move families from inquiry to enrollment faster",
-      heroCopy:
-        "Use the lead pipeline, tour scheduling, follow-up queue, and conversion signals to keep momentum high."
+      heroCopy: "Use the lead pipeline, tour scheduling, follow-up queue, and conversion signals to keep momentum high."
     }
   },
 
