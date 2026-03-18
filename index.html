@@ -2,15 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-  <meta
-    name="description"
-    content="Kid City USA Bee Smart CRM demo dashboard"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kid City USA Bee Smart CRM" />
   <title>Kid City USA CRM</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -25,10 +20,45 @@
   <div class="honeycomb honeycomb-left"></div>
   <div class="honeycomb honeycomb-right"></div>
 
-  <div class="app">
+  <div class="auth-shell" id="authShell">
+    <div class="auth-card glass">
+      <div class="brand auth-brand">
+        <div class="brand-hex">KC</div>
+        <div>
+          <div class="eyebrow">Kid City USA</div>
+          <h1 class="auth-title">Bee Smart CRM</h1>
+          <p class="muted auth-copy">Choose your workspace, then continue with Google</p>
+        </div>
+      </div>
+
+      <div class="role-switch auth-role-switch" id="authRoleSwitch">
+        <button type="button" class="role-btn auth-role-btn" data-login-role="executive">
+          Executive Login
+        </button>
+        <button type="button" class="role-btn auth-role-btn" data-login-role="director">
+          Director Login
+        </button>
+        <button type="button" class="role-btn auth-role-btn" data-login-role="admissions">
+          Admissions Login
+        </button>
+      </div>
+
+      <div class="auth-actions">
+        <button type="button" class="top-btn auth-btn-primary" id="googleSignInBtn" disabled>
+          Continue with Google
+        </button>
+      </div>
+
+      <p class="small-note" id="authMessage">
+        Select your account type first. You’ll finish sign-in with your Kid City USA Google account.
+      </p>
+    </div>
+  </div>
+
+  <div class="app hidden" id="appShell">
     <aside class="sidebar glass">
       <div class="brand">
-        <div class="brand-hex" aria-hidden="true">KC</div>
+        <div class="brand-hex">KC</div>
         <div>
           <div class="eyebrow">Kid City USA</div>
           <h2 class="brand-title">Bee Smart CRM</h2>
@@ -36,19 +66,14 @@
         </div>
       </div>
 
-      <div class="role-switch" id="roleSwitch" aria-label="Switch dashboard role">
-        <!-- injected by app.js -->
-      </div>
-
-      <nav class="nav" id="mainNav" aria-label="Primary navigation">
-        <!-- injected by app.js -->
-      </nav>
+      <div class="role-switch" id="roleSwitch"></div>
+      <nav class="nav" id="mainNav"></nav>
 
       <div class="launch-box">
         <div class="eyebrow">Launch Model</div>
-        <div class="launch-title">CRM-first workflow</div>
+        <div class="launch-title">Supabase-first workflow</div>
         <div class="small-note">
-          Google Sheets remains lead intake + backup. Staff work in the CRM.
+          Manual lead entry and executive CSV import are enabled.
         </div>
       </div>
     </aside>
@@ -66,14 +91,15 @@
             id="globalSearch"
             class="search-input"
             type="search"
-            placeholder="Search leads, centers, tours, classrooms, invoices…"
+            placeholder="Search leads, tours, messages, classrooms…"
             autocomplete="off"
           />
         </label>
 
         <div class="top-actions">
-          <button class="chip-btn active" type="button" id="demoStateBtn">Live Concept</button>
-          <button class="top-btn" type="button" id="userPill">Avery Carter · Executive</button>
+          <button class="chip-btn active" type="button" id="refreshBtn">Refresh</button>
+          <button class="top-btn" type="button" id="userPill">Loading…</button>
+          <button class="top-btn" type="button" id="signOutBtn">Sign Out</button>
         </div>
       </header>
 
@@ -81,9 +107,7 @@
         <div>
           <div class="eyebrow">Where Kids Can “BEE” Kids</div>
           <h2 id="heroTitle">Operations in one bright command center</h2>
-          <p id="heroCopy">
-            Lead intake flows from Google Sheets. Every other operational area is designed for clean role-based daily use.
-          </p>
+          <p id="heroCopy">Loading live data from Supabase…</p>
         </div>
 
         <div class="hero-hexes" aria-hidden="true">
@@ -94,25 +118,20 @@
         </div>
       </section>
 
-      <section class="kpis" id="kpis" aria-label="Key performance indicators"></section>
-
       <section class="toolbar glass">
-        <div class="toolbar-left">
+        <div>
           <div class="toolbar-title">Smart filters</div>
-          <div class="small-note">
-            Use the quick filters or search to narrow the demo data.
-          </div>
+          <div class="small-note">Filter live CRM records from Supabase.</div>
         </div>
-        <div class="toolbar-actions" id="quickFilters">
-          <!-- injected by app.js -->
-        </div>
+        <div class="toolbar-actions" id="quickFilters"></div>
       </section>
+
+      <section class="kpis" id="kpis"></section>
 
       <section class="view active" id="view-overview"></section>
       <section class="view" id="view-pipeline"></section>
       <section class="view" id="view-tours"></section>
       <section class="view" id="view-operations"></section>
-      <section class="view" id="view-billing"></section>
       <section class="view" id="view-parentComms"></section>
       <section class="view" id="view-compliance"></section>
       <section class="view" id="view-ai"></section>
@@ -120,6 +139,6 @@
   </div>
 
   <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
