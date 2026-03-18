@@ -1,37 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Kid City CRM Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <meta
+    name="description"
+    content="Kid City USA Bee Smart CRM demo dashboard"
+  />
+  <title>Kid City USA CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="honeycomb honeycomb-left"></div>
+  <div class="honeycomb honeycomb-right"></div>
 
-<div id="auth">
-<input id="email" placeholder="Email"/>
-<button onclick="login()">Login</button>
-</div>
+  <div class="app">
+    <aside class="sidebar glass">
+      <div class="brand">
+        <div class="brand-hex" aria-hidden="true">KC</div>
+        <div>
+          <div class="eyebrow">Kid City USA</div>
+          <h2 class="brand-title">Bee Smart CRM</h2>
+          <p class="muted brand-subtitle">Premium childcare operations hub</p>
+        </div>
+      </div>
 
-<div id="app" style="display:none;">
-<h1 id="title"></h1>
+      <div class="role-switch" id="roleSwitch" aria-label="Switch dashboard role">
+        <!-- injected by app.js -->
+      </div>
 
-<select id="locationSelect"></select>
+      <nav class="nav" id="mainNav" aria-label="Primary navigation">
+        <!-- injected by app.js -->
+      </nav>
 
-<div class="grid">
-<div class="card" id="stats"></div>
-<div class="card" id="stages"></div>
-<div class="card" id="sources"></div>
-<div class="card" id="trend"></div>
-</div>
+      <div class="launch-box">
+        <div class="eyebrow">Launch Model</div>
+        <div class="launch-title">CRM-first workflow</div>
+        <div class="small-note">
+          Google Sheets remains lead intake + backup. Staff work in the CRM.
+        </div>
+      </div>
+    </aside>
 
-<div class="card">
-<h3>Leads</h3>
-<div id="leads"></div>
-</div>
+    <main class="content">
+      <header class="topbar glass">
+        <div class="top-title">
+          <div class="eyebrow">Workspace Dashboard</div>
+          <h1 id="pageTitle">Executive Command Center</h1>
+        </div>
 
-</div>
+        <label class="search-wrap" for="globalSearch">
+          <span class="sr-only">Search CRM data</span>
+          <input
+            id="globalSearch"
+            class="search-input"
+            type="search"
+            placeholder="Search leads, centers, tours, classrooms, invoices…"
+            autocomplete="off"
+          />
+        </label>
 
-<script src="app.js"></script>
+        <div class="top-actions">
+          <button class="chip-btn active" type="button" id="demoStateBtn">Live Concept</button>
+          <button class="top-btn" type="button" id="userPill">Avery Carter · Executive</button>
+        </div>
+      </header>
+
+      <section class="hero glass">
+        <div>
+          <div class="eyebrow">Where Kids Can “BEE” Kids</div>
+          <h2 id="heroTitle">Operations in one bright command center</h2>
+          <p id="heroCopy">
+            Lead intake flows from Google Sheets. Every other operational area is designed for clean role-based daily use.
+          </p>
+        </div>
+
+        <div class="hero-hexes" aria-hidden="true">
+          <div class="hero-hex gold">Enroll</div>
+          <div class="hero-hex teal">Staff</div>
+          <div class="hero-hex blue">Care</div>
+          <div class="hero-hex rose">Grow</div>
+        </div>
+      </section>
+
+      <section class="kpis" id="kpis" aria-label="Key performance indicators"></section>
+
+      <section class="toolbar glass">
+        <div class="toolbar-left">
+          <div class="toolbar-title">Smart filters</div>
+          <div class="small-note">
+            Use the quick filters or search to narrow the demo data.
+          </div>
+        </div>
+        <div class="toolbar-actions" id="quickFilters">
+          <!-- injected by app.js -->
+        </div>
+      </section>
+
+      <section class="view active" id="view-overview"></section>
+      <section class="view" id="view-pipeline"></section>
+      <section class="view" id="view-tours"></section>
+      <section class="view" id="view-operations"></section>
+      <section class="view" id="view-billing"></section>
+      <section class="view" id="view-parentComms"></section>
+      <section class="view" id="view-compliance"></section>
+      <section class="view" id="view-ai"></section>
+    </main>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
