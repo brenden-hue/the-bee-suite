@@ -155,15 +155,6 @@ function buildRoleButtons() {
 }
 
 function buildNav() {
-  elements.mainNav.innerHTML = config.views.map((view) => {
-    const active = view.id === state.currentView ? "active" : "";
-    return `
-      <button class="nav-btn ${active}" type="button" data-view="${escapeHtml(view.id)}">
-        ${escapeHtml(view.label)}
-      </button>
-    `;
-  }).join("");
-
   elements.mainNav.querySelectorAll(".nav-btn").forEach((btn) => {
     btn.addEventListener("click", () => setView(btn.dataset.view));
   });
@@ -330,7 +321,7 @@ function getRoleKpis() {
   const activeLocations = state.data.locations.filter((l) => l.is_active).length;
   const activeLeads = state.data.leads.filter((l) => l.status !== "lost").length;
   const enrolledLeads = state.data.leads.filter((l) => l.status === "enrolled").length;
-  const openTours = state.data.tours.filter((t) => ["scheduled", "confirmed"].includes(t.status)).length;
+  const openTours = state.data.tours.filter((t) => ["scheduled", "confirmed", "pending_confirmation"].includes(t.status)).length;
   const unreadMessages = state.data.messages.filter((m) => m.is_unread).length;
   const openCompliance = state.data.compliance.filter((c) => c.status !== "complete").length;
 
@@ -555,7 +546,7 @@ function renderTours() {
       <div class="panel glass">
         <div class="panel-head"><h3>Tour Metrics</h3><span class="chip">Live data</span></div>
         <div class="metric-list">
-          ${metricRow("Tours Scheduled", "Scheduled or confirmed rows.", String(state.data.tours.filter((t) => ["scheduled", "confirmed"].includes(t.status)).length))}
+          ${metricRow("Tours Scheduled", "Scheduled or confirmed rows.", String(state.data.tours.filter((t) => ["scheduled", "confirmed", "pending_confirmation"].includes(t.status)).length))}
           ${metricRow("Completed Tours", "Finished visits.", String(state.data.tours.filter((t) => t.status === "completed").length))}
           ${metricRow("Pending Confirmation", "Needs family confirmation.", String(state.data.tours.filter((t) => t.status === "pending_confirmation").length))}
           ${metricRow("No Shows", "Recovery workflow needed.", String(state.data.tours.filter((t) => t.status === "no_show").length))}
@@ -706,7 +697,12 @@ function renderAll() {
 }
 
 async function loadProfile(userId) {
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
   if (error) throw error;
   return data;
 }
@@ -727,7 +723,7 @@ async function loadData() {
     supabase.from("crm_messages_expanded").select("*").order("created_at", { ascending: false }),
     supabase.from("compliance_items").select("*").order("created_at", { ascending: false }),
     supabase.from("classrooms").select("*").order("name"),
-    supabase.from("staff_assignments_expanded").select("*").order("created_at", { ascending: false })
+    supabase.from("staff_assignments").select("*").order("created_at", { ascending: false })
   ]);
 
   const all = [locationsRes, leadsRes, toursRes, messagesRes, complianceRes, classroomsRes, staffingRes];
@@ -799,9 +795,16 @@ function parseCsvLine(line) {
 }
 
 function parseCsv(text) {
-  const lines = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n").filter((line) => line.trim());
+  const lines = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n")
+    .filter((line) => line.trim());
+
   if (lines.length < 2) return [];
+
   const headers = parseCsvLine(lines[0]);
+
   return lines.slice(1).map((line) => {
     const values = parseCsvLine(line);
     const row = {};
@@ -859,7 +862,10 @@ async function handleBulkLeadSubmit(event) {
     showInlineMessage("bulkLeadMessage", "Reading CSV...");
     const text = await file.text();
     const rows = parseCsv(text);
-    if (!rows.length) throw new Error("The CSV file is empty or missing data rows.");
+
+    if (!rows.length) {
+      throw new Error("The CSV file is empty or missing data rows.");
+    }
 
     const locationCodeMap = new Map(
       state.data.locations
@@ -899,6 +905,7 @@ async function handleBulkLeadSubmit(event) {
     });
 
     showInlineMessage("bulkLeadMessage", `Uploading ${inserts.length} leads...`);
+
     const { error } = await supabase.from("leads").insert(inserts);
     if (error) throw error;
 
@@ -1049,3 +1056,4 @@ async function init() {
 }
 
 init();
+
