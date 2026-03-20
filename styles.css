@@ -13,12 +13,9 @@
   --radius-lg: 22px;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   min-height: 100%;
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -29,24 +26,10 @@ body {
   color: var(--text);
 }
 
-body {
-  overflow-x: hidden;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-button {
-  appearance: none;
-}
-
-.hidden {
-  display: none !important;
-}
+body { overflow-x: hidden; }
+button, input, select, textarea { font: inherit; }
+button { appearance: none; }
+.hidden { display: none !important; }
 
 .bg-orb {
   position: fixed;
@@ -88,15 +71,8 @@ button {
   background-position: 0 0, 0 0, 32px 55px;
 }
 
-.honeycomb-left {
-  left: -120px;
-  bottom: 40px;
-}
-
-.honeycomb-right {
-  right: -120px;
-  top: 120px;
-}
+.honeycomb-left { left: -120px; bottom: 40px; }
+.honeycomb-right { right: -120px; top: 120px; }
 
 .glass {
   background: linear-gradient(180deg, rgba(27, 34, 46, 0.92), rgba(16, 21, 29, 0.90));
@@ -120,7 +96,6 @@ button {
   padding: 28px;
 }
 
-.auth-form,
 .panel-form {
   display: grid;
   gap: 14px;
@@ -373,21 +348,10 @@ button {
   color: #171208;
 }
 
-.gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-2));
-}
-
-.teal {
-  background: linear-gradient(135deg, var(--teal), #98f6e5);
-}
-
-.blue {
-  background: linear-gradient(135deg, var(--blue), #c8e3ff);
-}
-
-.rose {
-  background: linear-gradient(135deg, var(--rose), #ffc6d3);
-}
+.gold { background: linear-gradient(135deg, var(--gold), var(--gold-2)); }
+.teal { background: linear-gradient(135deg, var(--teal), #98f6e5); }
+.blue { background: linear-gradient(135deg, var(--blue), #c8e3ff); }
+.rose { background: linear-gradient(135deg, var(--rose), #ffc6d3); }
 
 .toolbar {
   border-radius: var(--radius-xl);
@@ -539,29 +503,12 @@ button {
   background: rgba(255, 255, 255, 0.04);
 }
 
-.status-new {
-  background: rgba(81, 225, 195, 0.14);
-}
-
-.status-contacted {
-  background: rgba(120, 191, 255, 0.14);
-}
-
-.status-tour_scheduled {
-  background: rgba(255, 203, 71, 0.16);
-}
-
-.status-application_started {
-  background: rgba(255, 138, 168, 0.16);
-}
-
-.status-enrolled {
-  background: rgba(184, 239, 112, 0.16);
-}
-
-.status-lost {
-  background: rgba(255, 110, 119, 0.16);
-}
+.status-new { background: rgba(81, 225, 195, 0.14); }
+.status-contacted { background: rgba(120, 191, 255, 0.14); }
+.status-tour_scheduled { background: rgba(255, 203, 71, 0.16); }
+.status-application_started { background: rgba(255, 138, 168, 0.16); }
+.status-enrolled { background: rgba(184, 239, 112, 0.16); }
+.status-lost { background: rgba(255, 110, 119, 0.16); }
 
 .kanban {
   display: grid;
