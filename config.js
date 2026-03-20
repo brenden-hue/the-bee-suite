@@ -1,6 +1,6 @@
 window.CRM_CONFIG = {
-  supabaseUrl: "YOUR_SUPABASE_URL",
-  supabaseAnonKey: "YOUR_SUPABASE_ANON_KEY",
+  supabaseUrl: "https://dzfdvfcqexhtyffknyas.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6ZmR2ZmNxZXhodHlmZmtueWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODYxNDcsImV4cCI6MjA4OTM2MjE0N30.7kWjZRGL40V87twZkr4R0hieImR9yvCJGH2IR6SUuC8",
 
   billingHidden: true,
 
