@@ -183,7 +183,81 @@ async function showAppForSession(session) {
   buildNav();
   buildQuickFilters();
 
-  await loadData();
+  await async function loadData() {
+  const locationFilter = state.selectedLocationId;
+
+  function applyLocationFilter(query) {
+    if (!state.isCorporate && state.crmLocationId) {
+      return query.eq("crm_location_id", state.crmLocationId);
+    }
+
+    if (state.isCorporate && locationFilter) {
+      return query.eq("crm_location_id", locationFilter);
+    }
+
+    return query; // corporate viewing ALL
+  }
+
+  // LOCATIONS (only corporate needs all)
+  if (state.isCorporate) {
+    const { data: locations } = await supabase.from("locations").select("*");
+    state.data.locations = locations || [];
+  }
+
+  // LEADS
+  {
+    let query = supabase.from("leads").select("*").order("created_at", { ascending: false });
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.leads = data || [];
+  }
+
+  // TOURS
+  {
+    let query = supabase.from("tours").select("*").order("created_at", { ascending: false });
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.tours = data || [];
+  }
+
+  // MESSAGES
+  {
+    let query = supabase.from("messages").select("*").order("created_at", { ascending: false });
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.messages = data || [];
+  }
+
+  // COMPLIANCE
+  {
+    let query = supabase.from("compliance").select("*");
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.compliance = data || [];
+  }
+
+  // CLASSROOMS
+  {
+    let query = supabase.from("classrooms").select("*");
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.classrooms = data || [];
+  }
+
+  // STAFFING
+  {
+    let query = supabase.from("staffing").select("*");
+    query = applyLocationFilter(query);
+
+    const { data } = await query;
+    state.data.staffing = data || [];
+  }
+}
   renderAll();
 
   elements.authShell.classList.add("hidden");
@@ -220,17 +294,7 @@ if (loginBtn) {
     }
   });
 });
-  async function loadProfile(userId) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
 
-  if (error) throw error;
-
-  return data;
-}
   if (elements.authRoleSwitch) {
     elements.authRoleSwitch.querySelectorAll(".auth-role-btn").forEach((button) => {
       button.addEventListener("click", () => {
@@ -275,6 +339,26 @@ async function init() {
   } else {
     showAuth();
   }
+    async function loadProfile(userId) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
+  state.crmLocationId = state.profile?.crm_location_id || null;
+
+// Corporate users can switch locations
+state.isCorporate = ["admin", "executive"].includes(state.profile?.role);
+
+// Default selected location
+state.selectedLocationId = state.isCorporate
+  ? null // null = ALL locations initially
+  : state.crmLocationId;
 
   supabase.auth.onAuthStateChange(async (_event, nextSession) => {
     if (!nextSession) {
