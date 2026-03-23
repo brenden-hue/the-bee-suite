@@ -210,6 +210,16 @@ function bindEvents() {
 if (loginBtn) {
   loginBtn.addEventListener("click", handleEmailLogin);
 }
+  ["emailInput", "passwordInput"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      handleEmailLogin();
+    }
+  });
+});
   if (elements.authRoleSwitch) {
     elements.authRoleSwitch.querySelectorAll(".auth-role-btn").forEach((button) => {
       button.addEventListener("click", () => {
