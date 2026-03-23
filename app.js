@@ -71,6 +71,24 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function locationSwitcher: document.getElementById("locationSwitcher"),
+function buildLocationSwitcher() {
+  if (!state.isCorporate || !elements.locationSwitcher) return;
+
+  const locations = state.data.locations || [];
+
+  elements.locationSwitcher.innerHTML = `
+    <option value="">All Locations</option>
+    ${locations.map(loc => `
+      <option value="${loc.crm_location_id}">
+        ${loc.name || loc.crm_location_id}
+      </option>
+    `).join("")}
+  `;
+
+  elements.locationSwitcher.value = state.selectedLocationId || "";
+}
+
 function titleCase(value) {
   return String(value ?? "")
     .replaceAll("_", " ")
@@ -284,6 +302,7 @@ function bindEvents() {
 if (loginBtn) {
   loginBtn.addEventListener("click", handleEmailLogin);
 }
+  
   ["emailInput", "passwordInput"].forEach((id) => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -313,6 +332,13 @@ if (loginBtn) {
   });
 
   elements.refreshBtn.addEventListener("click", async () => {
+    await loadData();
+    renderAll();
+  });
+}
+if (elements.locationSwitcher) {
+  elements.locationSwitcher.addEventListener("change", async (e) => {
+    state.selectedLocationId = e.target.value || null;
     await loadData();
     renderAll();
   });
