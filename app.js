@@ -220,6 +220,17 @@ if (loginBtn) {
     }
   });
 });
+  async function loadProfile(userId) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
   if (elements.authRoleSwitch) {
     elements.authRoleSwitch.querySelectorAll(".auth-role-btn").forEach((button) => {
       button.addEventListener("click", () => {
