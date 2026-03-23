@@ -43,15 +43,13 @@ window.CRM_CONFIG = {
   },
 
   leadImportTemplateHeaders: [
-    "family_name",
-    "child_name",
-    "child_age",
-    "source",
-    "location_code",
-    "status",
-    "tour_state",
-    "intent_score",
-    "notes",
-    "created_at"
-  ]
+  "family_name",
+  "child_name",
+  "child_age",
+  "source",
+  "crm_location_id",
+  "status",
+  "notes",
+  "created_at"
+]
 };
