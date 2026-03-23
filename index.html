@@ -43,10 +43,18 @@
       </div>
 
       <div class="auth-actions">
-        <button type="button" class="top-btn auth-btn-primary" id="googleSignInBtn" disabled>
-          Continue with Google
-        </button>
-      </div>
+  <div class="panel-form">
+    <input type="email" id="emailInput" placeholder="Enter your location email" />
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <button type="button" class="top-btn auth-btn-primary" id="emailSignInBtn">
+      Sign In
+    </button>
+  </div>
+</div>
+
+<p class="small-note" id="authMessage">
+  Enter your location email and shared password to continue.
+</p>
 
       <p class="small-note" id="authMessage">
         Select your account type first. You’ll finish sign-in with your Kid City USA Google account.
