@@ -184,7 +184,9 @@ async function handleEmailLogin() {
     setAuthMessage(err.message || "Login failed", true);
   }
 }
-async function showAppForSession(session) {
+async function showAppForSession(session) await loadData();
+buildLocationSwitcher();
+renderAll();{
   state.session = session;
   state.profile = await loadProfile(session.user.id);
 
