@@ -553,22 +553,45 @@
     `;
   }
 
-  function renderPipeline(filtered) {
-    const groups = {
-      new: [],
-      contacted: [],
-      tour_scheduled: [],
-      application_started: [],
-      enrolled: []
-    };
+ function renderPipeline() {
+  const stages = {
+    new: [],
+    contacted: [],
+    tour_scheduled: [],
+    application_started: [],
+    enrolled: []
+  };
 
-    filtered.leads.forEach((lead) => {
-      if (lead.status === "new") groups.new.push(lead);
-      if (lead.status === "contacted") groups.contacted.push(lead);
-      if (lead.status === "tour_scheduled") groups.tour_scheduled.push(lead);
-      if (lead.status === "application_started") groups.application_started.push(lead);
-      if (lead.status === "enrolled") groups.enrolled.push(lead);
-    });
+  state.data.leads.forEach(lead => {
+    const stage = lead.status || "new";
+    if (stages[stage]) stages[stage].push(lead);
+  });
+
+  function column(title, items) {
+    return `
+      <div class="kanban-col">
+        <h4>${title}</h4>
+        ${items.map(l => `
+          <div class="kanban-card">
+            <strong>${l.family_name || "No Name"}</strong>
+            <div>${l.child_name || ""}</div>
+            <div>${l.source || ""}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  document.getElementById("view-pipeline").innerHTML = `
+    <div class="kanban">
+      ${column("New", stages.new)}
+      ${column("Contacted", stages.contacted)}
+      ${column("Tour", stages.tour_scheduled)}
+      ${column("Application", stages.application_started)}
+      ${column("Enrolled", stages.enrolled)}
+    </div>
+  `;
+}
 
     function kanbanCards(items) {
       if (!items.length) return emptyState("No matching records.");
