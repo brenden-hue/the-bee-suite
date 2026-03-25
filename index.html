@@ -25,16 +25,25 @@
   <div class="honeycomb honeycomb-left"></div>
   <div class="honeycomb honeycomb-right"></div>
 
-  <div class="auth-shell" id="authShell">
-    <div class="auth-card glass">
-      <div class="brand auth-brand">
-        <div class="brand-hex" aria-hidden="true">KC</div>
-        <div>
-          <div class="eyebrow">Kid City USA</div>
-          <h1 class="auth-title">Bee Smart CRM</h1>
-          <p class="muted auth-copy">Choose a workspace view, then sign in with your email and password.</p>
-        </div>
-      </div>
+<div id="authShell" class="auth-shell">
+
+  <div class="auth-card">
+    <h2>Kid City USA CRM</h2>
+    <p>Sign in with your location email</p>
+
+    <input
+      type="email"
+      id="emailInput"
+      placeholder="location@kidcityusa.com"
+      autocomplete="email"
+    />
+
+    <button id="loginBtn">Continue</button>
+
+    <div id="authMessage" class="auth-message"></div>
+  </div>
+
+</div>
 
       <div class="role-switch auth-role-switch" id="authRoleSwitch" aria-label="Select login workspace">
         <button type="button" class="role-btn auth-role-btn" data-login-role="executive">Executive</button>
