@@ -643,95 +643,44 @@
     `;
   }
 
-  function renderTours(filtered) {
-    const toursMarkup = filtered.tours.length
-      ? filtered.tours.map(tourCard).join("")
-      : emptyState("No tours match the current search/filter.");
+function renderTours() {
+  const html = state.data.tours.map(t => `
+    <div class="tour-row">
+      <strong>${new Date(t.tour_at).toLocaleString()}</strong>
+      <div>${t.family_name}</div>
+      <div>${t.location_id}</div>
+    </div>
+  `).join("");
 
-    elements.viewTours.innerHTML = `
-      <div class="two-col">
-        <div class="panel glass">
-          <div class="panel-head">
-            <h3>Upcoming Tours</h3>
-            <span class="chip">Calendar-ready</span>
-          </div>
-          <div class="tour-list">${toursMarkup}</div>
-        </div>
+  document.getElementById("view-tours").innerHTML = html;
+}
 
-        <div class="panel glass">
-          <div class="panel-head">
-            <h3>Tour Metrics</h3>
-            <span class="chip">Conversion focused</span>
-          </div>
-          <div class="metric-list">
-            ${metricRow("Tours Today", "Confirmed and pending visits.", String(filtered.tours.length))}
-            ${metricRow("Tours This Week", "Scheduled across visible centers.", "31")}
-            ${metricRow("Tour Conversion", "Lead to tour rate.", "38%")}
-            ${metricRow("Avg. Lead → Tour Time", "Current workflow speed.", "2.4d")}
-          </div>
-        </div>
-      </div>
-    `;
-  }
+function renderOperations() {
+  const classrooms = state.data.classrooms.length;
+  const staff = state.data.staffing.length;
 
-  function renderOperations() {
-    elements.viewOperations.innerHTML = `
-      <div class="three-col">
-        <div class="panel glass">
-          <div class="panel-head"><h3>Center Readiness</h3><span class="chip">Morning view</span></div>
-          <div class="metric-list">
-            ${metricRow("Children Checked In", "Current attendance count.", "87")}
-            ${metricRow("Open Classrooms", "Rooms operating today.", "8")}
-            ${metricRow("Coverage Level", "Staffing match to need.", "96%")}
-          </div>
-        </div>
+  document.getElementById("view-operations").innerHTML = `
+    <div class="metric-row">
+      <strong>${classrooms}</strong>
+      <span>Classrooms</span>
+    </div>
+    <div class="metric-row">
+      <strong>${staff}</strong>
+      <span>Staff</span>
+    </div>
+  `;
+}
 
-        <div class="panel glass">
-          <div class="panel-head"><h3>Staffing Alerts</h3><span class="chip">Actionable</span></div>
-          <div class="metric-list">
-            ${metricRow("Ratio Threshold", "Two classrooms nearing limit.", "2")}
-            ${metricRow("Call-outs", "Staff absences needing coverage.", "1")}
-            ${metricRow("Expiring Certs", "Renewals due within 30 days.", "3")}
-          </div>
-        </div>
+function renderMessages() {
+  const html = state.data.messages.map(m => `
+    <div class="msg-row">
+      <strong>${m.parent_name}</strong>
+      <div>${m.message}</div>
+    </div>
+  `).join("");
 
-        <div class="panel glass">
-          <div class="panel-head"><h3>Director Tasks</h3><span class="chip">Daily flow</span></div>
-          <div class="metric-list">
-            ${metricRow("Parent Replies", "Messages waiting for response.", "3")}
-            ${metricRow("Licensing Items", "Docs due tomorrow.", "1")}
-            ${metricRow("Supply Approvals", "Classroom requests open.", "4")}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderParentComms(filtered) {
-    const messageMarkup = filtered.messages.length
-      ? filtered.messages.map(messageCard).join("")
-      : emptyState("No communication items match the current search/filter.");
-
-    elements.viewParentComms.innerHTML = `
-      <div class="two-col">
-        <div class="panel glass">
-          <div class="panel-head"><h3>Parent Communication Hub</h3><span class="chip">Shared inbox concept</span></div>
-          <div class="msg-list">${messageMarkup}</div>
-        </div>
-
-        <div class="panel glass">
-          <div class="panel-head"><h3>Communication Stats</h3><span class="chip">Response health</span></div>
-          <div class="metric-list">
-            ${metricRow("Messages Today", "Across parent channels.", "32")}
-            ${metricRow("Unanswered", "Waiting in queue.", "7")}
-            ${metricRow("Avg. Response Time", "Current service speed.", "45m")}
-            ${metricRow("Tour Confirmations", "Automated + manual touchpoints.", "9")}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
+  document.getElementById("view-parentComms").innerHTML = html;
+}
   function renderCompliance(filtered) {
     const complianceMarkup = filtered.compliance.length
       ? filtered.compliance.map((item) => metricRow(item.title, item.detail, item.value)).join("")
