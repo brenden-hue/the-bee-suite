@@ -89,7 +89,10 @@ button { appearance: none; }
   place-items: center;
   padding: 24px;
 }
-
+.auth-shell {
+  display: grid;
+  place-items: center;
+}
 <style>
 .auth-card {
   max-width: 420px;
