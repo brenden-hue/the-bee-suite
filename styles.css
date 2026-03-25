@@ -92,29 +92,67 @@ button { appearance: none; }
 
 <style>
 .auth-card {
-  max-width: 400px;
+  max-width: 420px;
   margin: auto;
-  padding: 32px;
-  background: #111;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  padding: 36px;
+  background: linear-gradient(180deg, rgba(27, 34, 46, 0.95), rgba(16, 21, 29, 0.95));
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  text-align: center;
+}
+
+.auth-card h2 {
+  margin-bottom: 8px;
+}
+
+.auth-card p {
+  margin-bottom: 18px;
+  color: var(--muted);
 }
 
 .auth-card input {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin-top: 12px;
-  border-radius: 8px;
-  border: none;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  outline: none;
+}
+
+.auth-card input::placeholder {
+  color: var(--muted);
 }
 
 .auth-card button {
   width: 100%;
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 8px;
-  background: #f4b400;
-  font-weight: bold;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--gold), var(--gold-2));
+  font-weight: 800;
+  color: #171208;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.auth-card button:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.auth-message {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.auth-message-error {
+  color: #ff6b6b;
 }
 </style>
 
