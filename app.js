@@ -43,111 +43,78 @@
     }
   };
 
-  const SAMPLE_DATA = {
-    leads: [
-      {
-        name: "Ashley Rodriguez",
-        child: "Lucas, Preschool",
-        location: "Orlando",
-        date: "Today",
-        status: "tour_scheduled",
-        tour: "Tomorrow 10:30 AM",
-        source: "Website",
-        tags: ["orlando", "high_intent", "today"]
-      },
-      {
-        name: "Jordan Kim",
-        child: "Mina, Toddler",
-        location: "Oviedo",
-        date: "Today",
-        status: "contacted",
-        tour: "Pending",
-        source: "Phone",
-        tags: ["needs_reply", "today"]
-      },
-      {
-        name: "Taylor Singh",
-        child: "Avery, Pre-K",
-        location: "Lake Mary",
-        date: "Yesterday",
-        status: "new",
-        tour: "Not booked",
-        source: "Walk-in",
-        tags: ["needs_reply"]
-      },
-      {
-        name: "Morgan Patel",
-        child: "Noah, Infant",
-        location: "Orlando",
-        date: "Yesterday",
-        status: "enrolled",
-        tour: "Completed",
-        source: "Referral",
-        tags: ["orlando", "high_intent"]
-      }
-    ],
-    tours: [
-      {
-        time: "10:30 AM",
-        family: "Ashley Rodriguez",
-        child: "Lucas, Preschool",
-        location: "Orlando",
-        status: "Confirmed",
-        tags: ["orlando", "today", "high_intent"]
-      },
-      {
-        time: "1:00 PM",
-        family: "Jordan Kim",
-        child: "Mina, Toddler",
-        location: "Oviedo",
-        status: "Pending confirmation",
-        tags: ["needs_reply", "today"]
-      }
-    ],
-    messages: [
-      {
-        from: "Ashley Rodriguez",
-        body: "Can we confirm tomorrow's tour and infant availability?",
-        assigned: "Admissions",
-        time: "12m ago",
-        tags: ["high_intent", "needs_reply", "today", "orlando"]
-      },
-      {
-        from: "Jordan Kim",
-        body: "Do you have any part-time toddler openings next month?",
-        assigned: "Director",
-        time: "33m ago",
-        tags: ["needs_reply", "today"]
-      }
-    ],
-    compliance: [
-      {
-        title: "Fire drill log",
-        detail: "Oviedo center documentation due before close of business.",
-        value: "Due today",
-        tags: ["today"]
-      },
-      {
-        title: "Background check renewals",
-        detail: "Three staff certifications expire in the next 30 days.",
-        value: "3 renewals",
-        tags: []
-      }
-    ],
-    billingActivity: [
-      {
-        title: "Autopay batch completed",
-        detail: "27 payments posted successfully across active centers.",
-        tags: ["today"]
-      },
-      {
-        title: "Past due outreach queue",
-        detail: "Nine accounts need follow-up this afternoon.",
-        tags: ["needs_reply"]
-      }
-    ]
-  };
+  async function loadAllData() {
+  const isCorporate = state.profile.role === "executive";
 
+  function applyLocationFilter(query) {
+    if (!isCorporate) {
+      return query.eq("location_id", state.profile.location_id);
+    }
+    return query;
+  }
+
+  // LEADS
+  {
+    let q = supabase
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.leads = data || [];
+  }
+
+  // TOURS
+  {
+    let q = supabase
+      .from("tours")
+      .select("*")
+      .order("tour_at", { ascending: true });
+
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.tours = data || [];
+  }
+
+  // MESSAGES
+  {
+    let q = supabase.from("messages").select("*");
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.messages = data || [];
+  }
+
+  // CLASSROOMS
+  {
+    let q = supabase.from("classrooms").select("*");
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.classrooms = data || [];
+  }
+
+  // STAFFING
+  {
+    let q = supabase.from("staffing").select("*");
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.staffing = data || [];
+  }
+
+  // COMPLIANCE
+  {
+    let q = supabase.from("compliance").select("*");
+    q = applyLocationFilter(q);
+
+    const { data } = await q;
+    state.data.compliance = data || [];
+  }
+}
   const STORAGE_KEYS = {
     loginRole: "kidcity-login-role",
     view: "kidcity-view",
@@ -177,7 +144,7 @@
     currentView: localStorage.getItem(STORAGE_KEYS.view) || "overview",
     currentFilter: localStorage.getItem(STORAGE_KEYS.filter) || "all",
     searchTerm: "",
-    data: cloneSampleData()
+    data: ()
   };
 
   const elements = {
