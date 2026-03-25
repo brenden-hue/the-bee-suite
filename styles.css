@@ -90,11 +90,33 @@ button { appearance: none; }
   padding: 24px;
 }
 
+<style>
 .auth-card {
-  width: min(520px, 100%);
-  border-radius: var(--radius-xl);
-  padding: 28px;
+  max-width: 400px;
+  margin: auto;
+  padding: 32px;
+  background: #111;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.auth-card button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f4b400;
+  font-weight: bold;
+}
+</style>
 
 .panel-form {
   display: grid;
