@@ -1005,7 +1005,7 @@ async function handleEmailOnlyLogin() {
     state.session = null;
     state.profile = null;
     state.locationsById = new Map();
-    state.data = cloneSampleData();
+    state.data =();
     showAuth();
     setAuthMessage(error?.message || fallbackMessage, true);
   }
