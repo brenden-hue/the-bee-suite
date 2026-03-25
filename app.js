@@ -959,22 +959,61 @@
 
     return fallback;
   }
+async function handleEmailOnlyLogin() {
+  const email = document.getElementById("emailInput")?.value?.trim().toLowerCase();
 
-  async function loadProfile(userId) {
-    const { error: ensureError } = await supabase.rpc("ensure_profile");
-    if (ensureError) throw ensureError;
+  if (!email) {
+    setAuthMessage("Enter your email", true);
+    return;
+  }
 
-    const { data, error } = await supabase
+  setAuthMessage("Signing in...");
+
+  try {
+    // Find profile by email
+    const { data: profile, error } = await supabase
       .from("profiles")
-      .select("user_id, email, full_name, location_id, role, active")
-      .eq("user_id", userId)
+      .select("*")
+      .eq("email", email)
       .single();
 
-    if (error) throw error;
-    if (!data?.active) throw new Error("This account is not active for the CRM.");
+    if (error || !profile) {
+      throw new Error("No account found for this email");
+    }
 
-    return data;
+    // Fake session object
+    const session = {
+      user: {
+        id: profile.id,
+        email: profile.email
+      }
+    };
+
+    // Save session locally
+    localStorage.setItem("kidcity-session", JSON.stringify(session));
+
+    await showAppForSession(session);
+
+  } catch (err) {
+    console.error(err);
+    setAuthMessage(err.message || "Login failed", true);
   }
+}
+ async function loadProfile(userIdOrEmail) {
+  let query = supabase.from("profiles").select("*");
+
+  if (userIdOrEmail.includes("@")) {
+    query = query.eq("email", userIdOrEmail);
+  } else {
+    query = query.eq("id", userIdOrEmail);
+  }
+
+  const { data, error } = await query.single();
+
+  if (error) throw error;
+
+  return data;
+}
 
   async function loadLocations() {
     const { data, error } = await supabase.from("locations").select("id, name, slug").order("name");
@@ -1081,11 +1120,10 @@
     }
   }
 
-  async function handleSignOut() {
-    if (!supabase) {
-      showAuth();
-      return;
-    }
+function handleSignOut() {
+  localStorage.removeItem("kidcity-session");
+  showAuth();
+}
 
     await supabase.auth.signOut();
     state.session = null;
@@ -1112,7 +1150,16 @@
     });
 
     elements.loginBtn?.addEventListener("click", handleEmailLogin);
+["emailInput"].forEach((id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
 
+  el.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      handleEmailOnlyLogin();
+    }
+  });
+});
     [elements.emailInput, elements.passwordInput].forEach((input) => {
       input?.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -1133,6 +1180,11 @@
 
   async function init() {
     bindEvents();
+    const loginBtn = document.getElementById("loginBtn");
+
+if (loginBtn) {
+  loginBtn.addEventListener("click", handleEmailOnlyLogin);
+}
     updateAuthRoleButtons();
 
     if (!configLooksReady) {
@@ -1176,7 +1228,22 @@
     });
   }
 
-  init().catch((error) => {
-    handleBootstrapError(error, "App failed to initialize.");
-  });
+ async function init() {
+  bindEvents();
+  updateAuthRoleButtons();
+
+  const storedSession = localStorage.getItem("kidcity-session");
+
+  if (storedSession) {
+    try {
+      const session = JSON.parse(storedSession);
+      await showAppForSession(session);
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  showAuth();
+}
 })();
