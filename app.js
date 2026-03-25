@@ -206,13 +206,7 @@
     return JSON.parse(JSON.stringify(value));
   }
 
-  function cloneSampleData() {
-    if (typeof structuredClone === "function") {
-      return structuredClone(SAMPLE_DATA);
-    }
 
-    return structuredCloneFallback(SAMPLE_DATA);
-  }
 
   function saveState() {
     localStorage.setItem(STORAGE_KEYS.view, state.currentView);
