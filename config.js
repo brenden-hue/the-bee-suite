@@ -14,13 +14,6 @@ window.CRM_CONFIG = {
     { id: "ai", label: "AI Copilot" }
   ],
 
-  quickFilters: [
-    { id: "all", label: "All Data" },
-    { id: "high_intent", label: "High Intent" },
-    { id: "needs_reply", label: "Needs Reply" },
-    { id: "today", label: "Today" }
-  ],
-
   roleMeta: {
     executive: {
       label: "Executive View",
@@ -40,16 +33,6 @@ window.CRM_CONFIG = {
       heroTitle: "Move families from inquiry to enrollment faster",
       heroCopy: "Use the lead pipeline, tour scheduling, follow-up queue, and conversion signals to keep momentum high."
     }
-  },
-
-  leadImportTemplateHeaders: [
-  "family_name",
-  "child_name",
-  "child_age",
-  "source",
-  "crm_location_id",
-  "status",
-  "notes",
-  "created_at"
-]
+  }
 };
+
