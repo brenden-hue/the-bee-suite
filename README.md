@@ -1,43 +1,52 @@
-# Kid City USA CRM
+# The Bee Suite
 
-Supabase-backed CRM frontend for Kid City USA.
+This version is aligned to the Supabase route and includes only the files needed for the current test build plus the workbook source data used to rebuild Supabase.
 
-## Files
+## Included source data
 
-- `index.html`
-- `styles.css`
-- `config.js`
-- `app.js`
-- `supabase_setup.sql`
+Source workbook: `Kid City CRM Database.xlsx`
 
-## Current features
+Imported into the generated Supabase SQL:
+- 95 locations
+- 97 profiles
+- 13,276 leads
 
-- Google login
-- login screen role-selection buttons
-- actual access still controlled by Supabase `profiles.role` and `profiles.location_id`
-- executive bulk CSV upload
-- manual lead entry for executive, director, and admissions
-- billing hidden from UI
-- role-based dashboard views
+The rebuilt SQL lives in `kidcityusa_crm.sql` and is intended to be pasted into the Supabase SQL Editor for a fresh CRM setup.
 
-## Important auth note
+## What the SQL does
 
-The login screen buttons are for UX only.
+- recreates the core CRM tables used by the frontend
+- imports locations, profiles, and leads from the Excel workbook
+- normalizes workbook roles for the app
+  - `school_user` -> `director`
+  - `executive_user` -> `executive`
+- normalizes lead statuses for the app
+  - `new_inquiry`, `subscribed`, `new` -> `new`
+  - `tour_booked` -> `tour_scheduled`
+  - `cleaned` -> `lost`
+- creates the expanded views the frontend expects
+- adds test-mode RLS policies so the static frontend can read and insert data
 
-Actual access is determined by:
-- Supabase Auth user
-- matching row in `public.profiles`
-- `profiles.role`
-- `profiles.location_id`
-- RLS policies in Supabase
+## Supabase import steps
 
-## Google auth setup
+1. Open your Supabase project.
+2. Go to `SQL Editor`.
+3. Open `kidcityusa_crm.sql` from this folder.
+4. Paste the file contents into a new query.
+5. Run the query once on a clean test database.
+6. After it finishes, confirm these tables exist:
+   - `locations`
+   - `profiles`
+   - `leads`
+   - `tours`
+   - `parent_messages`
+   - `classrooms`
+   - `staff_assignments`
+   - `compliance_items`
+7. In `profiles`, verify the email you want to test with is present.
+8. Publish the frontend and test login using that email.
 
-Enable Google auth in Supabase and add your redirect URLs for:
-- local development
-- production GitHub Pages URL
+## Important test note
 
-## CSV headers
+The policies in `kidcityusa_crm.sql` are intentionally open for testing so the static frontend can work with the anon key. Tighten them before any production launch.
 
-```csv
-family_name,child_name,child_age,source,location_code,status,tour_state,intent_score,notes,created_at
